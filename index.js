@@ -1,12 +1,11 @@
-const five = require('johnny-five');
-
-const board = new five.Board();
-
-board.on('ready', () => {
-  const upButton = new five.Button(13);
-  const downButton = new five.Button(12);
-  const pressButton = new five.Button(11);
-
+module.exports = function rotaryEncoder({
+  upButton,
+  downButton,
+  pressButton,
+  onUp,
+  onDown,
+  onPress,
+}) {
   let waveform = '';
 
   upButton.on('up', () => {
@@ -20,7 +19,7 @@ board.on('ready', () => {
   });
 
   pressButton.on('up', () => {
-    console.log('press');
+    onPress();
   });
 
   function handleWaveform() {
@@ -29,11 +28,11 @@ board.on('ready', () => {
     }
 
     if (waveform === '01') {
-      console.log('up');
+      onUp();
     } else if (waveform === '10') {
-      console.log('down');
+      onDown();
     }
 
     waveform = '';
   }
-});
+}
