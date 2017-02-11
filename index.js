@@ -7,6 +7,7 @@ module.exports = function rotaryEncoder({
   onPress,
 }) {
   let waveform = '';
+  let waveformTimeout;
 
   upButton.on('up', () => {
     waveform += '1';
@@ -24,7 +25,14 @@ module.exports = function rotaryEncoder({
 
   function handleWaveform() {
     if (waveform.length < 2) {
+      waveformTimeout = setTimeout(() => {
+        waveform = '';
+      }, 8);
       return;
+    }
+
+    if (waveformTimeout) {
+      clearTimeout(waveformTimeout);
     }
 
     if (waveform === '01') {
